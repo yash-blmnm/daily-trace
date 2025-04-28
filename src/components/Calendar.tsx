@@ -8,7 +8,7 @@ interface CalendarProps {
   journalEntries: JournalObject[];
 }
 
-type WeekRow = JSX.Element[];
+type WeekRow = React.JSX.Element[];
 
 export default function Calendar({ journalEntries }: CalendarProps) {
   const navigate = useNavigate();

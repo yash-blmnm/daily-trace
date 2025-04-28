@@ -9,6 +9,7 @@ interface GoalState {
   fetchGoals: () => Promise<void>;
   handleCreateGoal: (goalData: NewGoalObject) => Promise<{ data?: any; error?: string }>;
   handleUpdateGoal: (goalId: string, updates: any) => Promise<{ data?: any; error?: string }>;
+  handleDeleteGoal: (goalId: string) => Promise<{ error?: string }>;
   handleFetchGoalsById: (goalId: string) => Promise<{ data?: GoalObject | null; error?: string }>;
   handleFetchAllGoalsByUser: (userId: string) => Promise<{ data?: GoalObject[] | null; error?: string }>;
 }
@@ -72,6 +73,23 @@ export const useGoalStore = create<GoalState>((set) => ({
         }));
         
         return { data: convertedData?.[0] };
+    },
+
+    handleDeleteGoal: async (goalId: string) => {
+        const { error } = await supabase
+            .from('goals')
+            .delete()
+            .eq('id', goalId);
+
+        if (error) {
+            return { error: error.message };
+        }
+
+        set((state) => ({
+            goals: state.goals.filter(goal => goal.id !== goalId)
+        }));
+        
+        return {};
     },
 
     handleFetchGoalsById: async (goalId: string) => {

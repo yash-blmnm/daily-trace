@@ -1,5 +1,5 @@
 import { create } from 'zustand';
-import { JournalObject, NewJournalObject, Mood } from '../types/journalTypes';
+import { JournalObject, NewJournalObject } from '../types/journalTypes';
 import { createJournalEntry, updateJournalEntry, fetchJournalEntriesById, fetchJournalEntriesByUserId } from '../lib/journalActions';
 
 interface JournalState {

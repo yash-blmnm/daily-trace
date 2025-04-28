@@ -19,7 +19,7 @@ export default function GoalForm() {
   const user = useAuthStore((state) => state.user);
   const navigate = useNavigate();
   const isEditMode = Boolean(id);
-  const { handleCreateGoal, handleFetchGoalsById, handleUpdateGoal } = useGoalStore();
+  const { handleCreateGoal, handleFetchGoalsById, handleUpdateGoal, handleDeleteGoal: deleteGoal } = useGoalStore();
 
   const [name, setName] = useState('');
   const [description, setDescription] = useState('');
@@ -28,6 +28,7 @@ export default function GoalForm() {
   const [actions, setActions] = useState<ActionItem[]>([]);
   const [warning, setWarning] = useState('');
   const [dateError, setDateError] = useState('');
+  const [actionError, setActionError] = useState('');
 
   useEffect(() => {
     if (isEditMode && id) {
@@ -86,17 +87,29 @@ export default function GoalForm() {
     }
     const newAction: ActionItem = { id: Date.now(), text: '' };
     setActions((prev) => [...prev, newAction]);
+    setActionError('');
   };
 
   const handleUpdateAction = (id: number, value: string) => {
     setActions((prev) =>
       prev.map((action) => (action.id === id ? { ...action, text: value } : action))
     );
+    setActionError('');
   };
 
   const handleDeleteAction = (id: number) => {
     setActions((prev) => prev.filter((action) => action.id !== id));
-    setWarning(''); // clear warning when one is deleted
+    setWarning('');
+  };
+
+  const handleDeleteGoalClick = async () => {
+    if (!id) return;
+    if (window.confirm('Are you sure you want to delete this goal? This action cannot be undone.')) {
+      const { error } = await deleteGoal(id);
+      if (!error) {
+        navigate('/dashboard');
+      }
+    }
   };
 
   const handleSubmit = async (e: React.FormEvent) => {
@@ -108,6 +121,11 @@ export default function GoalForm() {
     }
 
     const actionTexts = actions.map((action) => action.text).filter((text) => text.trim() !== '');
+    
+    if (actionTexts.length === 0) {
+      setActionError('Please add at least one action for your goal');
+      return;
+    }
 
     const goalPayload: NewGoalObject = {
       userId: user?.id,
@@ -129,7 +147,19 @@ export default function GoalForm() {
 
   return (
     <div className="max-w-3xl min-w-2xl mx-auto p-4 text-gray-600 bg-white rounded-lg shadow-md">
-      <h2 className="mb-6">{isEditMode ? 'Edit Goal' : 'Create New Goal'}</h2>
+      <div className="flex justify-between items-center mb-6">
+        <h2>{isEditMode ? 'Edit Goal' : 'Create New Goal'}</h2>
+        {isEditMode && (
+          <Button 
+            varient="danger" 
+            onClick={handleDeleteGoalClick}
+            className="flex items-center gap-2"
+          >
+            <RiDeleteBinLine size={20} />
+            Delete Goal
+          </Button>
+        )}
+      </div>
       <form onSubmit={handleSubmit} className="flex flex-col gap-2 space-y-4">
         <InputText 
           label='Name'
@@ -165,8 +195,9 @@ export default function GoalForm() {
         {dateError && <p className="text-red-500 text-sm">{dateError}</p>}
 
         <div>
-          <h3 className="font-semibold mb-2">Actions (up to 3)</h3>
+          <h3 className="font-semibold mb-2">Actions (at least 1, up to 3)</h3>
           {warning && <p className="text-yellow-500 text-sm">{warning}</p>}
+          {actionError && <p className="text-red-500 text-sm">{actionError}</p>}
           <div className="flex flex-col items-start gap-1">
             {actions.map((action) => (
               <div key={action.id} className="flex items-center gap-8">

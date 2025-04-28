@@ -1,5 +1,5 @@
 import { PostgrestError } from '@supabase/supabase-js';
-import { GoalObject, NewGoalObject } from '../types/goalType';
+import { GoalObject, NewGoalObject } from '../types/journalTypes';
 import { supabase } from './dBClient';
 import { convertResponse } from '../utils/postgresHelpers';
 
