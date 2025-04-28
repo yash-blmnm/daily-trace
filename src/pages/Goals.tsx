@@ -129,7 +129,7 @@ export default function GoalForm() {
 
   return (
     <div className="max-w-3xl min-w-2xl mx-auto p-4 text-gray-600 bg-white rounded-lg shadow-md">
-      <h2 className="text-2xl text-blue-600 font-bold mb-6">{isEditMode ? 'Edit Goal' : 'Create New Goal'}</h2>
+      <h2 className="mb-6">{isEditMode ? 'Edit Goal' : 'Create New Goal'}</h2>
       <form onSubmit={handleSubmit} className="flex flex-col gap-2 space-y-4">
         <InputText 
           label='Name'
@@ -165,7 +165,7 @@ export default function GoalForm() {
         {dateError && <p className="text-red-500 text-sm">{dateError}</p>}
 
         <div>
-          <h3 className="font-semibold">Actions (up to 3)</h3>
+          <h3 className="font-semibold mb-2">Actions (up to 3)</h3>
           {warning && <p className="text-yellow-500 text-sm">{warning}</p>}
           <div className="flex flex-col items-start gap-1">
             {actions.map((action) => (
@@ -190,7 +190,7 @@ export default function GoalForm() {
               <button
                 type="button"
                 onClick={handleAddAction}
-                className="btn btn-sm font-semibold btn-outline mt-2 text-blue-600"
+                className="btn btn-sm font-semibold btn-outline mt-2 text-teal-600 hover:text-teal-700"
               >
                 + Add Action
               </button>
@@ -198,7 +198,7 @@ export default function GoalForm() {
           </div>
         </div>
 
-        <Button type="submit" varient='primary' className='w-full mt-4 mb-2'>
+        <Button type="submit" varient='primary' className='w-full mt-4 mb-2 bg-teal-600 hover:bg-teal-700'>
           {isEditMode ? 'Update Goal' : 'Create Goal'}
         </Button>
       </form>

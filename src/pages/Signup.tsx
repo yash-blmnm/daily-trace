@@ -31,7 +31,7 @@ const SignUpPage: React.FC = () => {
           <VerifyEmailNotice />
         :
         <>
-          <h2 className="text-center text-2xl font-extrabold text-blue-600">
+          <h2 className="mb-6">
             Welcome to DailyTrace!
           </h2>
           <p className="text-center text-sm text-gray-600">Track your goals, reflect on your day, and stay motivated!</p>
@@ -44,7 +44,7 @@ const SignUpPage: React.FC = () => {
                 value={name}
                 onChange={(e) => setName(e.target.value)}
                 required
-                className="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
+                className="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-teal-500 focus:border-teal-500 sm:text-sm"
               />
             </div>
             <div>
@@ -55,7 +55,7 @@ const SignUpPage: React.FC = () => {
                 value={email}
                 onChange={(e) => setEmail(e.target.value)}
                 required
-                className="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
+                className="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-teal-500 focus:border-teal-500 sm:text-sm"
               />
             </div>
             <div>
@@ -66,7 +66,7 @@ const SignUpPage: React.FC = () => {
                 value={password}
                 onChange={(e) => setPassword(e.target.value)}
                 required
-                className="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
+                className="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-teal-500 focus:border-teal-500 sm:text-sm"
               />
             </div>
             
@@ -75,7 +75,7 @@ const SignUpPage: React.FC = () => {
             <div>
               <button
                 type="submit"
-                className="w-full bg-blue-600 text-white py-2 px-4 rounded-md hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-600 focus:ring-opacity-50"
+                className="w-full bg-teal-600 text-white py-2 px-4 rounded-md hover:bg-teal-700 focus:outline-none focus:ring-2 focus:ring-teal-500 focus:ring-opacity-50"
               >
                 Sign Up
               </button>
@@ -83,7 +83,7 @@ const SignUpPage: React.FC = () => {
           </form>
           <div className="flex items-center justify-center space-x-2">
             <p className="text-sm text-gray-600">Already have an account?</p>
-            <Link to="/signin" className="text-sm text-blue-600 hover:text-blue-800">Sign In</Link>
+            <Link to="/signin" className="text-sm text-teal-600 hover:text-teal-700">Sign In</Link>
           </div>
         </>}
       </div>

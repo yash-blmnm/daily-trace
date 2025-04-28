@@ -11,7 +11,11 @@ function ProtectedRoute({ children }: ProtectedRouteProps) {
   const loading = useAuthStore((state) => state.loading);
 
   if (loading) {
-    return <div className="flex items-center justify-center h-screen">Loading...</div>;
+    return (
+      <div className="flex items-center justify-center h-screen text-teal-600">
+        <div className="animate-pulse">Loading...</div>
+      </div>
+    );
   }
 
   if (!user) {

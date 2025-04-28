@@ -31,10 +31,10 @@ export default function ForgotPasswordPage() {
   return (
     <div className="max-w-md w-full bg-white text-gray-600 p-8 rounded-lg shadow-md">
         <div>
-          <h2 className="mt-6 text-center text-3xl font-extrabold text-blue-600">
+          <h2 className="mt-6 mb-4">
             Forgot your password?
           </h2>
-          <p className="mt-2 text-center text-sm text-gray-600 ">
+          <p className="mt-2 text-center text-sm text-gray-600">
             No worries! Enter your email and we'll send you a reset link.
           </p>
         </div>
@@ -53,7 +53,7 @@ export default function ForgotPasswordPage() {
                 required
                 value={email}
                 onChange={(e) => setEmail(e.target.value)}
-                className="appearance-none rounded relative block w-full px-3 py-2 border border-gray-300  placeholder-gray-400  text-gray-900 bg-white focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
+                className="appearance-none rounded relative block w-full px-3 py-2 border border-gray-300 placeholder-gray-400 text-gray-900 focus:outline-none focus:ring-teal-500 focus:border-teal-500 sm:text-sm"
                 placeholder="Email address"
               />
             </div>
@@ -63,7 +63,7 @@ export default function ForgotPasswordPage() {
             <button
               type="submit"
               disabled={loading}
-              className="w-full bg-blue-600 text-white py-2 rounded-lg font-semibold hover:bg-blue-700 transition"
+              className="w-full bg-teal-600 text-white py-2 rounded-lg font-semibold hover:bg-teal-700 transition"
             >
               {loading ? 'Sending...' : 'Send Reset Link'}
             </button>
@@ -85,7 +85,7 @@ export default function ForgotPasswordPage() {
           <span>Remember your password?</span>
           <Link
             to="/signin"
-            className="font-medium text-indigo-600 hover:text-indigo-500"
+            className="font-medium text-teal-600 hover:text-teal-500"
           >
              Sign In
           </Link>

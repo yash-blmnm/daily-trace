@@ -27,7 +27,7 @@ function SignIn() {
 
   return (
     <div className="max-w-md w-full bg-white p-8 rounded-lg shadow-md text-gray-600">
-      <h2 className="text-2xl font-bold text-center text-blue-600 mb-6">
+      <h2 className="text-2xl font-bold text-center text-teal-600 mb-6">
         Welcome back to DailyTrace
       </h2>
 
@@ -47,7 +47,7 @@ function SignIn() {
             id="email"
             type="email"
             required
-            className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
+            className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-teal-500"
             value={email}
             onChange={(e) => setEmail(e.target.value)}
             placeholder="you@example.com"
@@ -63,7 +63,7 @@ function SignIn() {
             id="password"
             type="password"
             required
-            className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
+            className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-teal-500"
             value={password}
             onChange={(e) => setPassword(e.target.value)}
             placeholder="••••••••"
@@ -72,7 +72,7 @@ function SignIn() {
 
         {/* Forgot Password */}
         <div className="text-right">
-          <Link to="/forgot-password" className="text-sm text-blue-600 hover:underline">
+          <Link to="/forgot-password" className="text-sm text-teal-600 hover:underline">
             Forgot Password?
           </Link>
         </div>
@@ -80,7 +80,7 @@ function SignIn() {
         {/* Submit Button */}
         <button
           type="submit"
-          className="w-full bg-blue-600 text-white py-2 rounded-lg font-semibold hover:bg-blue-700 transition"
+          className="w-full bg-teal-600 text-white py-2 rounded-lg font-semibold hover:bg-teal-700 transition"
           disabled={loading}
         >
           {loading ? 'Signing in...' : 'Sign In'}
@@ -90,7 +90,7 @@ function SignIn() {
       {/* Footer */}
       <p className="mt-6 text-center text-sm text-gray-600">
         New here?{' '}
-        <Link to="/signup" className="text-blue-600 hover:underline font-semibold">
+        <Link to="/signup" className="text-teal-600 hover:underline font-semibold">
           Create an account
         </Link>
       </p>

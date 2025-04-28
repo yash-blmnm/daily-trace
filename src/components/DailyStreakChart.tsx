@@ -11,12 +11,12 @@ export default function DailyStreakChart() {
       {
         label: 'Actions Completed',
         data: [2, 3, 1, 4, 5, 2, 3], // Replace this with real fetched data later
-        backgroundColor: 'rgba(99, 102, 241, 0.7)',
+        backgroundColor: 'rgba(13, 148, 136, 0.7)', // teal-600 with opacity
       },
       {
         label: 'Reflections Completed',
         data: [1, 2, 0, 3, 4, 1, 2],
-        backgroundColor: 'rgba(79, 70, 229, 0.7)',
+        backgroundColor: 'rgba(20, 184, 166, 0.7)', // teal-500 with opacity
       }
     ],
   };
@@ -28,6 +28,25 @@ export default function DailyStreakChart() {
         position: 'top' as const,
       },
     },
+    scales: {
+      y: {
+        beginAtZero: true,
+        ticks: {
+          color: '#374151', // text-gray-700
+        },
+        grid: {
+          color: 'rgba(229, 231, 235, 0.5)', // gray-200 with opacity
+        }
+      },
+      x: {
+        ticks: {
+          color: '#374151', // text-gray-700
+        },
+        grid: {
+          display: false
+        }
+      }
+    }
   };
 
   return (

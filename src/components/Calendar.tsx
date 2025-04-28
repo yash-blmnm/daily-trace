@@ -2,13 +2,15 @@
 import { useNavigate } from 'react-router';
 import { useState } from 'react';
 import { format, addMonths, subMonths, startOfMonth, endOfMonth, startOfWeek, endOfWeek, addDays, isSameMonth, isSameDay } from 'date-fns';
+import { JournalObject, Mood } from '../types/journalTypes';
 
 interface CalendarProps {
-  journalDates: string[]; // ["2025-04-26", "2025-04-27"]
-  height?: number; // Height of the calendar in pixels
+  journalEntries: JournalObject[];
 }
 
-export default function Calendar({ journalDates, height }: CalendarProps) {
+type WeekRow = JSX.Element[];
+
+export default function Calendar({ journalEntries }: CalendarProps) {
   const navigate = useNavigate();
   const [currentMonth, setCurrentMonth] = useState(new Date());
 
@@ -20,13 +22,19 @@ export default function Calendar({ journalDates, height }: CalendarProps) {
     setCurrentMonth(addMonths(currentMonth, 1));
   };
 
-  const renderHeader = () => (
-    <div className="flex justify-between items-center mb-4">
-      <button onClick={handlePrevMonth} className="text-xl">&lt;</button>
-      <h2 className="text-xl font-bold">{format(currentMonth, 'MMMM yyyy')}</h2>
-      <button onClick={handleNextMonth} className="text-xl">&gt;</button>
-    </div>
-  );
+  const getMoodColor = (mood: Mood): string => {
+    const moodColors = {
+      [Mood.Happy]: 'bg-green-400',
+      [Mood.sad]: 'bg-blue-400',
+      [Mood.anxious]: 'bg-yellow-400',
+      [Mood.excited]: 'bg-purple-400',
+      [Mood.calm]: 'bg-teal-400',
+      [Mood.tired]: 'bg-gray-400',
+      [Mood.stressed]: 'bg-red-400',
+      [Mood.motivated]: 'bg-orange-400'
+    };
+    return moodColors[mood] || 'bg-gray-400';
+  };
 
   const renderDays = () => {
     const days = [];
@@ -35,7 +43,7 @@ export default function Calendar({ journalDates, height }: CalendarProps) {
 
     for (let i = 0; i < 7; i++) {
       days.push(
-        <div key={i} className="text-center font-semibold">
+        <div key={i} className="text-center font-semibold text-gray-600">
           {format(addDays(startDate, i), dateFormat)}
         </div>
       );
@@ -50,46 +58,84 @@ export default function Calendar({ journalDates, height }: CalendarProps) {
     const startDate = startOfWeek(monthStart, { weekStartsOn: 0 });
     const endDate = endOfWeek(monthEnd, { weekStartsOn: 0 });
 
-    const rows = [];
-    let days = [];
+    const rows: WeekRow[] = [];
+    let days: WeekRow = [];
     let day = startDate;
-    let formattedDate = '';
+
+    const today = new Date().toISOString().split('T')[0];
 
     while (day <= endDate) {
       for (let i = 0; i < 7; i++) {
-        formattedDate = format(day, 'yyyy-MM-dd');
-        const cloneDay = day;
-        const hasJournal = journalDates.includes(formattedDate);
+        const formattedDate = format(day, 'yyyy-MM-dd');
+        const journalEntry = journalEntries.find(entry => entry.date === formattedDate);
+        const isInPast = formattedDate < today;
 
         days.push(
           <div
-            key={day.toString()}
-            className={`p-2 h-10 border text-center cursor-pointer hover:bg-indigo-100
-              ${!isSameMonth(day, monthStart) ? 'text-gray-400' : ''}
-              ${isSameDay(day, new Date()) ? 'bg-indigo-200' : ''}`}
-            onClick={() => hasJournal && navigate(`/journal/${formattedDate}`)}
+            key={formattedDate}
+            className={`p-2 h-10 border text-center cursor-pointer transition-colors duration-200
+              ${!isSameMonth(day, monthStart) ? 'text-gray-400 hover:bg-gray-50' : ''}
+              ${isSameDay(day, new Date()) ? 'bg-teal-50' : ''}
+              ${isInPast && !journalEntry ? 'cursor-not-allowed bg-gray-50' : ''}`}
+            onClick={() => {
+              if (isInPast && !journalEntry) return;
+              navigate(`/journal/${formattedDate}`);
+            }}
+            title={journalEntry ? `Mood: ${journalEntry.mood}` : undefined}
           >
             <div>{format(day, 'd')}</div>
-            {hasJournal && <div className="w-2 h-2 mx-auto rounded-full bg-indigo-500 mt-1"></div>}
+            {journalEntry && (
+              <div 
+                className={`w-2 h-2 mx-auto rounded-full ${getMoodColor(journalEntry.mood)} mt-1`}
+                title={`Mood: ${journalEntry.mood}`}
+              />
+            )}
           </div>
         );
         day = addDays(day, 1);
       }
-      rows.push(
-        <div className="grid grid-cols-7" key={day.toString()}>
-          {days}
-        </div>
-      );
+      rows.push(days);
       days = [];
     }
-    return <div>{rows}</div>;
+    return <div className="space-y-1">{rows.map((week, i) => (
+      <div key={i} className="grid grid-cols-7">{week}</div>
+    ))}</div>;
   };
 
   return (
     <div className="bg-white p-4 rounded shadow">
-      {renderHeader()}
+      <div className="flex justify-between items-center mb-4">
+        <button 
+          onClick={handlePrevMonth} 
+          className="text-xl text-teal-600 hover:text-teal-700 transition-colors"
+          aria-label="Previous month"
+        >
+          &lt;
+        </button>
+        <h2 className="text-xl font-bold text-teal-600">{format(currentMonth, 'MMMM yyyy')}</h2>
+        <button 
+          onClick={handleNextMonth} 
+          className="text-xl text-teal-600 hover:text-teal-700 transition-colors"
+          aria-label="Next month"
+        >
+          &gt;
+        </button>
+      </div>
       {renderDays()}
       {renderCells()}
+      
+      {/* Mood Legend */}
+      <div className="mt-4 border-t pt-4">
+        <h4 className="text-sm font-semibold mb-2">Mood Legend:</h4>
+        <div className="grid grid-cols-4 gap-2 text-xs">
+          {Object.values(Mood).map(mood => (
+            <div key={mood} className="flex items-center gap-1">
+              <div className={`w-3 h-3 rounded-full ${getMoodColor(mood)}`} />
+              <span>{mood}</span>
+            </div>
+          ))}
+        </div>
+      </div>
     </div>
   );
 }

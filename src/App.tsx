@@ -11,6 +11,7 @@ import { useEffect } from 'react';
 import { useAuthStore } from './store/authStore';
 import ForgotPassword from './pages/ForgotPassword'
 import GoalPage from './pages/Goals'
+import JournalPage from './pages/JournalEntry'
 
 function App() {
   const fetchUser = useAuthStore((state) => state.fetchUser);
@@ -33,6 +34,8 @@ function App() {
             <Route path="/dashboard" element={<Dashboard />} />
             <Route path="/goals/new" element={<GoalPage />} />
             <Route path="/goals/:id" element={<GoalPage />} />
+            <Route path="/journal/new" element={<JournalPage />} />
+            <Route path="/journal/:date" element={<JournalPage />} />
           </Route>
         </Routes>
       </div>

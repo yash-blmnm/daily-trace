@@ -22,7 +22,7 @@ function Header() {
 
   return (
     <header className="w-full flex justify-between items-center px-6 py-4 shadow-md bg-white">
-      <Link to={user ? '/dashboard' : '/'} className="text-2xl font-bold text-blue-600">
+      <Link to={user ? '/dashboard' : '/'} className="text-2xl font-bold text-teal-600">
         DailyTrace
       </Link>
 
@@ -30,10 +30,10 @@ function Header() {
         {!user ? (
           <>
             {/* Not Logged In */}
-            <Link to="/signin" className="text-blue-600 hover:underline">
+            <Link to="/signin" className="text-teal-600 hover:underline">
               Sign In
             </Link>
-            <Link to="/signup" className="bg-blue-600 text-gray-100 px-4 py-2 rounded hover:bg-blue-700">
+            <Link to="/signup" className="bg-teal-600 text-gray-100 px-4 py-2 rounded hover:bg-teal-700">
               Sign Up
             </Link>
           </>
@@ -48,14 +48,14 @@ function Header() {
                   className="w-8 h-8 rounded-full object-cover"
                 />
               ) : (
-                <div className="w-8 h-8 bg-gray-300 rounded-full flex items-center justify-center">
+                <div className="w-8 h-8 bg-teal-100 text-teal-600 rounded-full flex items-center justify-center">
                   {user.email[0].toUpperCase()}
                 </div>
               )}
               <span className="font-medium text-gray-600">{user.user_metadata?.full_name || user.email}</span>
               <button
                 onClick={handleUserLogout}
-                className="ml-4 text-blue-500 hover:underline"
+                className="ml-4 text-teal-600 hover:underline"
               >
                 Logout
               </button>
@@ -65,13 +65,13 @@ function Header() {
         {/* Theme Toggle Button */}
         <button
           onClick={toggleTheme}
-          className="p-2 bg-gray-200  rounded-full outline-none focus:outline-none transition duration-300 ease-in-out"
+          className="p-2 bg-gray-200 rounded-full outline-none focus:outline-none transition duration-300 ease-in-out hover:bg-teal-100"
           aria-label="Toggle theme"
         >
           {isDarkMode ? (
-            <MdOutlineLightMode className="h-6 w-6 text-gray-800 " />
+            <MdOutlineLightMode className="h-6 w-6 text-teal-600" />
           ) : (
-            <MdOutlineDarkMode className="h-6 w-6 text-gray-800 " />
+            <MdOutlineDarkMode className="h-6 w-6 text-teal-600" />
           )}
         </button>
       </div>
