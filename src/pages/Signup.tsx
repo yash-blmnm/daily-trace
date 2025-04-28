@@ -1,7 +1,7 @@
 // src/pages/SignUpPage.tsx
 import React, { useState } from 'react';
 import { Link } from 'react-router';
-import { useAuthActions } from '../hooks/useAuthActions';
+import { useAuthStore } from '../store/authStore';
 import VerifyEmailNotice from '../components/VerifyEmailNotice';
 
 const SignUpPage: React.FC = () => {
@@ -10,12 +10,12 @@ const SignUpPage: React.FC = () => {
   const [password, setPassword] = useState('');
   const [error, setError] = useState<string | null>(null);
   const [signUpSuccess, setSignUpSuccess] = useState(false);
-  const { handleSignUp } = useAuthActions();
+  const handleSignUp = useAuthStore((state) => state.handleSignUp);
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     try {
-      const { error: errorMessage } = await handleSignUp(email, password, name); // Call signup function from AuthContext
+      const { error: errorMessage } = await handleSignUp(email, password, name);
       if (!errorMessage) {
         setSignUpSuccess(true);
         setError(null);

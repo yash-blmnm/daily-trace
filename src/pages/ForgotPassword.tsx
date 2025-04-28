@@ -1,9 +1,9 @@
 import { useState } from 'react';
-import { useAuthActions } from '../hooks/useAuthActions';
+import { useAuthStore } from '../store/authStore';
 import { Link } from 'react-router';
 
 export default function ForgotPasswordPage() {
-  const { handleResetPassword } = useAuthActions();
+  const handleResetPassword = useAuthStore((state) => state.handleResetPassword);
   const [email, setEmail] = useState('');
   const [loading, setLoading] = useState(false);
   const [successMessage, setSuccessMessage] = useState('');

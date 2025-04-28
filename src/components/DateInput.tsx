@@ -1,12 +1,12 @@
-
 interface DatePickerProps {
   label?: string;
   value: string;
   className?: string;
+  min?: string;
   onChange: (date: string) => void;
 }
 
-function DatePicker({ label = 'Select Date', value, className, onChange }: DatePickerProps) {
+function DatePicker({ label = 'Select Date', value, className, min, onChange }: DatePickerProps) {
 
   const inputClassName = `w-full px-2 py-1 border rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 border-gray-700 ${className}`;
 
@@ -18,6 +18,7 @@ function DatePicker({ label = 'Select Date', value, className, onChange }: DateP
         <input
           type="date"
           value={value}
+          min={min}
           onChange={(e) => onChange(e.target.value)}
           className={inputClassName}
         />

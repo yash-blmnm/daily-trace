@@ -1,10 +1,10 @@
 import { useState } from 'react';
 import { Link, useNavigate } from 'react-router';
-import { useAuthActions } from '../hooks/useAuthActions';
+import { useAuthStore } from '../store/authStore';
 
 function SignIn() {
   const navigate = useNavigate();
-  const { handleSignIn } = useAuthActions();
+  const handleSignIn = useAuthStore((state) => state.handleSignIn);
 
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
@@ -22,6 +22,7 @@ function SignIn() {
     } else {
       navigate('/dashboard');
     }
+    setLoading(false);
   }
 
   return (

@@ -4,12 +4,11 @@ import { useAuthStore } from '../store/authStore';
 import { useTheme } from '../context/ThemeContext';
 import { MdOutlineLightMode } from "react-icons/md";
 import { MdOutlineDarkMode } from "react-icons/md";
-import { useAuthActions } from '../hooks/useAuthActions';
 
 function Header() {
   const user = useAuthStore((state) => state.user);
+  const handleSignOut = useAuthStore((state) => state.handleSignOut);
   const { isDarkMode, toggleTheme } = useTheme();
-  const { handleSignOut } = useAuthActions();
   const navigate = useNavigate();
 
   const handleUserLogout = async () => {

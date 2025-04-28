@@ -11,7 +11,6 @@ import { useEffect } from 'react';
 import { useAuthStore } from './store/authStore';
 import ForgotPassword from './pages/ForgotPassword'
 import GoalPage from './pages/Goals'
-import { JournalContextProvider } from './context/JournalContext'
 
 function App() {
   const fetchUser = useAuthStore((state) => state.fetchUser);
@@ -25,18 +24,15 @@ function App() {
       <Header />
       <div className="min-h-[calc(100vh-114px)] flex items-center justify-center bg-gray-50 px-4">
         <Routes>
-        
           <Route path="/" element={<Home />} />
           <Route path="/signin" element={<SignIn />} />
           <Route path="/signup" element={<SignUp />} />
           <Route path="/forgot-password" element={<ForgotPassword />} />
-          
 
           <Route element={<ProtectedRoute />}>
             <Route path="/dashboard" element={<Dashboard />} />
             <Route path="/goals/new" element={<GoalPage />} />
             <Route path="/goals/:id" element={<GoalPage />} />
-          
           </Route>
         </Routes>
       </div>

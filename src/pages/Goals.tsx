@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react';
 import { useParams, useNavigate } from 'react-router';
 import { GoalObject, NewGoalObject } from '../types/journalTypes';
-import { useGoalActions } from '../hooks/useGoalActions';
+import { useGoalStore } from '../store/goalStore';
 import { useAuthStore } from '../store/authStore';
 import InputText from '../components/InputText';
 import InputTextArea from '../components/InputTextArea';
@@ -9,18 +9,17 @@ import { RiDeleteBinLine } from "react-icons/ri";
 import Button from '../components/Button';
 import DatePicker from '../components/DateInput';
 
-
 interface ActionItem {
   id: number;
   text: string;
 }
 
 export default function GoalForm() {
-  const { id } = useParams<{ id?: string }>(); // id will exist if editing
+  const { id } = useParams<{ id?: string }>();
   const user = useAuthStore((state) => state.user);
   const navigate = useNavigate();
   const isEditMode = Boolean(id);
-  const { handleCreateGoal, handleFetchGoalsById, handleUpdateGoal } = useGoalActions();
+  const { handleCreateGoal, handleFetchGoalsById, handleUpdateGoal } = useGoalStore();
 
   const [name, setName] = useState('');
   const [description, setDescription] = useState('');
@@ -28,6 +27,7 @@ export default function GoalForm() {
   const [targetDate, setTargetDate] = useState('');
   const [actions, setActions] = useState<ActionItem[]>([]);
   const [warning, setWarning] = useState('');
+  const [dateError, setDateError] = useState('');
 
   useEffect(() => {
     if (isEditMode && id) {
@@ -42,7 +42,42 @@ export default function GoalForm() {
         }
       })();
     }
-  }, [id, isEditMode]);
+  }, [id, isEditMode, handleFetchGoalsById]);
+
+  const validateDates = (start: string, target: string) => {
+    const today = new Date();
+    today.setHours(0, 0, 0, 0);
+    
+    const startDateObj = new Date(start);
+    const targetDateObj = new Date(target);
+
+    if (startDateObj < today) {
+      setDateError('Start date cannot be in the past');
+      return false;
+    }
+
+    if (targetDateObj <= startDateObj) {
+      setDateError('Target date must be after start date');
+      return false;
+    }
+
+    setDateError('');
+    return true;
+  };
+
+  const handleStartDateChange = (date: string) => {
+    setStartDate(date);
+    if (targetDate) {
+      validateDates(date, targetDate);
+    }
+  };
+
+  const handleTargetDateChange = (date: string) => {
+    setTargetDate(date);
+    if (startDate) {
+      validateDates(startDate, date);
+    }
+  };
 
   const handleAddAction = () => {
     if (actions.length >= 3) {
@@ -68,10 +103,14 @@ export default function GoalForm() {
     e.preventDefault();
     if (!name || !description || !startDate || !targetDate) return;
 
+    if (!validateDates(startDate, targetDate)) {
+      return;
+    }
+
     const actionTexts = actions.map((action) => action.text).filter((text) => text.trim() !== '');
 
     const goalPayload: NewGoalObject = {
-      userId: user?.id, // Assuming userId is available in your context
+      userId: user?.id,
       name,
       description,
       startDate: startDate,
@@ -85,7 +124,7 @@ export default function GoalForm() {
       await handleCreateGoal(goalPayload);
     }
 
-    navigate('/dashboard'); // redirect after saving
+    navigate('/dashboard');
   };
 
   return (
@@ -108,20 +147,22 @@ export default function GoalForm() {
           resizable={false}
         />
         <div className="flex gap-12">
-          
           <DatePicker 
             label='Start Date'
             className='flex-1' 
             value={startDate} 
-            onChange={(date) => setStartDate(date)}
+            onChange={handleStartDateChange}
+            min={new Date().toISOString().split('T')[0]}
           />
           <DatePicker 
             label='Target Date'
             className='flex-1' 
             value={targetDate} 
-            onChange={(date) => setTargetDate(date)} 
+            onChange={handleTargetDateChange}
+            min={startDate || new Date().toISOString().split('T')[0]}
           />
         </div>
+        {dateError && <p className="text-red-500 text-sm">{dateError}</p>}
 
         <div>
           <h3 className="font-semibold">Actions (up to 3)</h3>
